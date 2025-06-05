@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number to Words Converter</title>
+</head>
+<body>
+<h2>Number to Words Converter</h2>
+
+<p>Enter a number:</p>
+<input type="number" id="numberInput">
+<button onclick="convertToWords()">Convert</button>
+
+<p id="result"></p>
+
+<script>
+function convertToWords() {
+    // Get the input value
+    let number = document.getElementById("numberInput").value;
+
+    // Convert the input to a number
+    number = parseInt(number);
+
+    // Define arrays for words representation
+    let ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    let teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    let tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+    // Function to convert two-digit numbers to words
+    function twoDigitNumberToWords(num) {
+        if (num < 10) {
+            return ones[num];
+        } else if (num < 20) {
+            return teens[num - 10];
+        } else {
+            let tensDigit = Math.floor(num / 10);
+            let onesDigit = num % 10;
+            return tens[tensDigit] + " " + ones[onesDigit];
+        }
+    }
+
+    // Function to convert three-digit numbers to words
+    function threeDigitNumberToWords(num) {
+        let hundredDigit = Math.floor(num / 100);
+        let remainingDigits = num % 100;
+        let result = ones[hundredDigit] + " Hundred";
+        if (remainingDigits !== 0) {
+            result += " " + twoDigitNumberToWords(remainingDigits);
+        }
+        return result;
+    }
+
+    // Convert the number to words
+    let result = "";
+    if (number === 0) {
+        result = "Zero";
+    } else if (number < 10) {
+        result = ones[number];
+    } else if (number < 100) {
+        result = twoDigitNumberToWords(number);
+    } else if (number < 1000) {
+        result = threeDigitNumberToWords(number);
+    } else {
+        result = "Number is too large to convert.";
+    }
+
+    // Display the result
+    document.getElementById("result").innerHTML = "Number in words: " + result;
+}
+</script>
+
+</body>
+</html>
